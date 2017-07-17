@@ -1,0 +1,156 @@
+#include <iostream>
+#include <random>
+#include <ctime>
+#include <iomanip>
+using namespace std;
+//focus on fixing the multiple chips option. It ran before but now its not displaying total earnings
+
+int main()
+{
+	//Menu: Select 1 chip, multiple chips, exit program
+	int option;
+	const int EXIT = 0;
+	const int SINGLE = 1;
+	const int MULTIPLE = 2;
+	const int ROW_MAX = 12;
+	const int ZERO = 100;
+	const int ONE = 500;
+	const int TWO = 1000;
+	const int THREE = 0;
+	const int FOUR = 10000;
+	const int FIVE = 0;
+	const int SIX = 1000;
+	const int SEVEN = 500;
+	const int EIGHT = 100;
+	const int slot_value[9]{ ZERO,ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT };
+
+
+		cout << "Press 0 to quit the program\nPress 1 to drop a single chip\nPress 2 to drop multiple chips\n";
+		cin >> option;
+		
+	if (option == EXIT)
+	{
+		return 0;
+	}
+
+	//When Single, select slot
+	if (option == SINGLE)
+	{
+		cout << "Select slot number (0-8)\n";
+		double slot;
+		cin >> slot;
+		double start_position = slot;
+		double current_position = start_position;
+		double const MOVE_RIGHT = 0.5;
+		double const MOVE_LEFT = 0 - 0.5;
+		int current_row;
+		cout << "Position [ ";
+		cout << fixed << setprecision(1) << start_position << " ";
+
+
+		//loop 12 times until final position; track position (Watch out for border walls)
+		srand(time(0));
+		for (current_row = 1; current_row <= ROW_MAX; current_row++)
+		{
+			if (current_position >= 0.5 && current_position< 8)
+			{
+				int peg = rand() % 2;
+				if (peg == 0)
+				{
+					current_position = current_position + MOVE_LEFT;
+				}
+
+				if (peg == 1)
+				{
+					current_position = current_position + MOVE_RIGHT;
+				}
+			}
+			else
+			{
+
+				if (current_position == 0)
+				{
+					current_position = current_position + MOVE_RIGHT;
+				}
+
+				if (current_position == 8)
+				{
+					current_position = current_position + MOVE_LEFT;
+				}
+			}
+			cout << fixed << setprecision(1) << current_position << " ";
+		}
+
+		//output money won, output path
+		cout << "]\n";
+		cout << "You earned $" << slot_value[static_cast <int> (current_position)] << endl;
+
+
+	}
+	//When multiple, select number of chips, select slot
+	if (option == MULTIPLE)
+	{
+		int chips;
+		int i = 1;//counter for chips;
+		cout << "Select number of chips\n";
+		cin >> chips;
+		cout << "Select slot number (0-8)\n";
+		double slot;
+		cin >> slot;
+		double start_position;
+		start_position = slot;
+		double current_position = start_position;
+		double const MOVE_RIGHT = 0.5;
+		double const MOVE_LEFT = 0 - 0.5;
+		int current_row;
+		int single_earnings = 0;
+		int total_earnings = 0;
+
+		//loop 12 times for each chip until final position (Watch out for border walls)
+
+		srand(time(0));
+		for (i = 1; i <= chips; i++)
+		{
+
+
+			for (current_row = 1; current_row <= ROW_MAX; current_row++)
+			{
+				if (current_position >= 0.5 && current_position < 8)
+				{
+					int peg = rand() % 2;
+					if (peg == 0)
+					{
+						current_position = current_position + MOVE_LEFT;
+					}
+
+					if (peg == 1)
+					{
+						current_position = current_position + MOVE_RIGHT;
+					}
+				}
+				else
+				{
+
+					if (current_position == 0)
+					{
+						current_position = current_position + MOVE_RIGHT;
+					}
+
+					if (current_position == 8)
+					{
+						current_position = current_position + MOVE_LEFT;
+					}
+				}
+
+			}
+			//output total money, output average earnings per chip
+			single_earnings = slot_value[static_cast <int> (current_position)];
+			total_earnings = total_earnings + single_earnings;
+		}
+		cout << "Your total earnings are $" << total_earnings << endl;
+		double average_earnings = (total_earnings / chips) + (total_earnings%chips);
+		cout << "Your average earnings per chip is $" << average_earnings << endl;
+	}
+	system("pause");
+	return 0;
+}
