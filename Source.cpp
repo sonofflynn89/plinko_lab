@@ -21,9 +21,18 @@ Result: Passed
 
 Test Case #2
 Input: (using fixed seed of 42) 1, 5, 1, 0, 1, 8, 4
-Expected output: 
+Expected output:
+[5.0, 5.5, 5.0, 5.5, 5.0, 5.5, 6.0, 5.5, 5.0, 5.5, 6.0, 6.5, 6.0] Winnings $1000.00
+[0.0, 0.5, 1.0, 1.5, 1.0, 1.5, 1.0, 0.5, 1.0, 0.5, 1.0, O.5, 0.0] Winnings $100.00
+[8.0, 7.5, 8.0, 7.5, 7.0, 6.5, 6.0, 6.5, 7.0, 7.5, 7.0, 7.5, 7.0] Winnings $500.00
+Result: Passed
 
 Test Case #3
+Input: (using a fixed seed of 42) 2, 7, 6
+Expected output:
+Total winnings on 7 chips: $ 4100.00
+Average winnings per chip : $585.71
+Result: Passed
 
 */
 
@@ -42,9 +51,15 @@ int main() {
 
 	int userInput = 0;
 	int slotNumber = 0;
-
 	int pathDirection = 0;
 	int numChips = 0;
+
+	double finalPosition = 0.0;
+	double positionChip = 0.0;
+	double singleWinnings = 0.0;
+	double totalWinnings = 0.0;
+	double averageWinnings = 0.0;
+
 	const int PATH_DECIMAL_PLACES = 1;
 	const int WINNING_DECIMAL_PLACES = 2;
 	const int RAND_SEED = 42;
@@ -52,23 +67,18 @@ int main() {
 	const int NUM_PEGS = 12;
 	const int LEFT_OPTION = 0;
 	const int RIGHT_OPTION = 1;
+
 	const double MIN_SLOT = 0.0;
 	const double MAX_SLOT = 8.0;
 	const double MOVE_LEFT = -0.5;
 	const double MOVE_RIGHT = 0.5;
-	double positionChip = 0.0;
-	double singleWinnings = 0.0;
-	double totalWinnings = 0.0;
-	const double TOTAL_WINNINGS_RESET = 0.0;
-	double averageWinnings = 0.0;
-
 	const double FLOAT_EPSILON = 0.0001;
 	const double WINNINGS_SMALL = 100;
 	const double WINNINGS_MEDIUM = 500;
 	const double WINNINGS_LARGE = 1000;
 	const double WINNINGS_FAILURE = 0;
 	const double WINNINGS_JACKPOT = 10000;
-	double finalPosition = 0.0;
+	const double TOTAL_WINNINGS_RESET = 0.0;
 
 	srand(RAND_SEED);
 
@@ -88,7 +98,8 @@ int main() {
 				cout << "Path: [" << fixed << setprecision(PATH_DECIMAL_PLACES) << static_cast<double>(slotNumber);
 				positionChip = static_cast<double>(slotNumber);
 				for (int i = 1; i <= NUM_PEGS; ++i) {
-					if ((fabs(positionChip - MIN_SLOT) <= FLOAT_EPSILON) || (fabs(positionChip - MAX_SLOT) <= FLOAT_EPSILON)) {
+					if ((fabs(positionChip - MIN_SLOT) <= FLOAT_EPSILON) ||
+						(fabs(positionChip - MAX_SLOT) <= FLOAT_EPSILON)) {
 						if (fabs(positionChip - MIN_SLOT) <= FLOAT_EPSILON) {
 							positionChip = positionChip + MOVE_RIGHT;
 						}
@@ -144,7 +155,6 @@ int main() {
 			cout << "How many chips do you want to drop (>0)? ";
 			cin >> numChips;
 			cout << endl;
-
 			if (numChips <= 0) {
 				cout << "Invalid number of chips." << endl << endl;
 			}
@@ -218,6 +228,7 @@ int main() {
 			cout << "3 - Show the options menu" << endl;
 			cout << "4 - Quit the program" << endl << endl;
 		}
+
 		else {
 			cout << "Invalid selection. Enter 3 to see options." << endl << endl;
 		}
