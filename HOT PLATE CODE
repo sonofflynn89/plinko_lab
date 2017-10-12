@@ -1,5 +1,5 @@
 /*
-Nathaniel Neubert, Caleb Pomar, nathanielneubert@gmail.com, cpsharksfan@gmail.com 
+Nathaniel Neubert, Caleb Pomar, nathanielneubert@gmail.com, cpsharksfan@gmail.com
 This is a program that simulates a hotplate with heaters of 100 degrees on the top and
 bottom. It outputs an excel file which can be used to create a graphical representaion.
 The program may also accept a pre-existing hotplate temperature table and determine the
@@ -11,7 +11,7 @@ This program was made using proper pair programming in Visual Studios.
 We successfully created such a graphical representation in excel with the output file created
 by our program.
 
-Test Case 1 
+Test Case 1
 We hand calculated all the values for the hotplate after one and two iterations and
 stored the values in an excel spreadsheet. Below the results can be seen.
 
@@ -160,12 +160,9 @@ int main() {
 	outputPlate.close();
 
 	cout << endl;
-	cout << "Outputting final plate to file " << "\"" << "Hotplate.csv" << "\"" << endl << endl;
+	cout << "Outputting final plate to file " << "\"" << oFileName << "\"" << endl << endl;
 
 	inputPlate.open(iFileName);
-	if (!inputPlate.is_open()) {
-		cout << "fail" << endl;
-	}
 	if (inputPlate.is_open()) {
 		for (int i = 0; i < SIDE_LENGTH; ++i) {
 			for (int j = 0; j < SIDE_LENGTH; ++j) {
@@ -201,7 +198,6 @@ int main() {
 		}
 		cout << endl;
 	}
-
 	system("pause");
 	return 0;
 }
