@@ -5,8 +5,8 @@ Size of the array must be changed by one constant (side length)
 initialize 2d array using for loops (10 x 10)
 top and bottom middle 8 cells are 100
 use nested fors to intialize															DONE!!! thanks sudo
-	use if else to initalize border 100
-print table with setprecision 4 and setw 10 (NO MAGIC NUMBERS!!!) 
+use if else to initalize border 100
+print table with setprecision 4 and setw 10 (NO MAGIC NUMBERS!!!)
 
 
 update elements once
@@ -83,7 +83,7 @@ int main() {
 
 	for (int i = 1; i < MAX_INDEX; ++i) {
 		for (int j = 1; j < MAX_INDEX; ++j) {
-			newTemps[i][j] = (oldTemps[i - NEIGHBOR_ADJUST][j] + oldTemps[i + NEIGHBOR_ADJUST][j] + 
+			newTemps[i][j] = (oldTemps[i - NEIGHBOR_ADJUST][j] + oldTemps[i + NEIGHBOR_ADJUST][j] +
 				oldTemps[i][j + NEIGHBOR_ADJUST] + oldTemps[i][j - NEIGHBOR_ADJUST]) / NUM_NEIGHBORS;
 		}
 	}
@@ -145,33 +145,28 @@ int main() {
 	if (!inputPlate.is_open()) {
 		cout << "fail" << endl;
 	}
-	else {
-		cout << "success" << endl;
+	if (inputPlate.is_open()) {
+	for (int i = 0; i < SIDE_LENGTH; ++i) {
+	for (int j = 0; j < SIDE_LENGTH; ++j) {
+	inputPlate >> oldTemps[i][j];
 	}
-
-	/*if (inputPlate.is_open()) {
-		for (int i = 0; i < SIDE_LENGTH; ++i) {
-			for (int j = 0; j < SIDE_LENGTH; ++j) {
-				inputPlate >> oldTemps[i][j];
-			}
-		}
+	}
 	}
 	else {
-		cout << "loser" << endl; 
+	cout << "loser" << endl;
 	}
 
 	cout << "printing inputed plate" << endl << endl;
 
 	for (int i = 0; i < SIDE_LENGTH; ++i) {
-		for (int j = 0; j < SIDE_LENGTH; ++j) {
-			cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
-			if (j < MAX_INDEX) {
-				cout << ", ";
-			}
-		}
-		cout << endl;
+	for (int j = 0; j < SIDE_LENGTH; ++j) {
+	cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
+	if (j < MAX_INDEX) {
+	cout << ", ";
 	}
-	*/
+	}
+	cout << endl;
+	}
 
 	system("pause");
 	return 0;
