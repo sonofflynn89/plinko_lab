@@ -1,0 +1,178 @@
+/*
+
+Size of the array must be changed by one constant (side length)
+
+initialize 2d array using for loops (10 x 10)
+top and bottom middle 8 cells are 100
+use nested fors to intialize															DONE!!! thanks sudo
+	use if else to initalize border 100
+print table with setprecision 4 and setw 10 (NO MAGIC NUMBERS!!!) 
+
+
+update elements once
+use nested fors to just update inside (rows 1-8, columns 1-8)
++i, -i, +j, -j, divided by 4 (NO MAGIC NUMBERS!!);
+print table
+
+repeat until stable. Use while (biggest change > 0.1)
+
+output data to Hotplate.csv
+input data from zybook file
+run through the same flippin thing
+graph results in excel
+
+*/
+
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+using namespace std;
+
+int main() {
+
+	const int SIDE_LENGTH = 10;
+	const int MIN_INDEX = 0;
+	const int MAX_INDEX = SIDE_LENGTH - 1;
+	const int NUM_NEIGHBORS = 4;
+
+	const double HOT_TEMP = 100.0000;
+	const double COLD_TEMP = 0.0000;
+	const double STABLE_CHANGE = 0.1;
+
+	double oldTemps[SIDE_LENGTH][SIDE_LENGTH];
+	double newTemps[SIDE_LENGTH][SIDE_LENGTH];
+	double maxTempChange = 0.0;
+	double currentTempChange = 0.0;
+
+	const int NEIGHBOR_ADJUST = 1;
+	const int HEAT_PRECISION = 4;
+	const int HEAT_WIDTH = 10;
+
+	ifstream inputPlate;
+	ofstream outputPlate;
+	string oFileName = "Hotplate.csv";
+	//string iFileName = "Inputplate.txt";
+
+
+	cout << "Hotplate Simulator" << endl << endl;
+	cout << "Printing initial plate..." << endl;
+
+	for (int i = 0; i < SIDE_LENGTH; ++i) {
+		for (int j = 0; j < SIDE_LENGTH; ++j) {
+			if ((i == MIN_INDEX || i == MAX_INDEX) && (j > MIN_INDEX && j < MAX_INDEX)) {
+				oldTemps[i][j] = HOT_TEMP;
+			}
+			else {
+				oldTemps[i][j] = COLD_TEMP;
+			}
+		}
+	}
+
+	for (int i = 0; i < SIDE_LENGTH; ++i) {
+		for (int j = 0; j < SIDE_LENGTH; ++j) {
+			cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
+			if (j < MAX_INDEX) {
+				cout << ", ";
+			}
+		}
+		cout << endl;
+	}
+
+	cout << endl << endl;
+	cout << "Printing Plate after one iteration..." << endl;
+
+	for (int i = 1; i < MAX_INDEX; ++i) {
+		for (int j = 1; j < MAX_INDEX; ++j) {
+			newTemps[i][j] = (oldTemps[i - NEIGHBOR_ADJUST][j] + oldTemps[i + NEIGHBOR_ADJUST][j] + 
+				oldTemps[i][j + NEIGHBOR_ADJUST] + oldTemps[i][j - NEIGHBOR_ADJUST]) / NUM_NEIGHBORS;
+		}
+	}
+	for (int i = 1; i < MAX_INDEX; ++i) {
+		for (int j = 1; j < MAX_INDEX; ++j) {
+			oldTemps[i][j] = newTemps[i][j];
+		}
+	}
+
+	for (int i = 0; i < SIDE_LENGTH; ++i) {
+		for (int j = 0; j < SIDE_LENGTH; ++j) {
+			cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
+			if (j < MAX_INDEX) {
+				cout << ", ";
+			}
+		}
+		cout << endl;
+	}
+
+	do {
+		maxTempChange = 0;
+		for (int i = 1; i < MAX_INDEX; ++i) {
+			for (int j = 1; j < MAX_INDEX; ++j) {
+				newTemps[i][j] = (oldTemps[i - NEIGHBOR_ADJUST][j] + oldTemps[i + NEIGHBOR_ADJUST][j] +
+					oldTemps[i][j + NEIGHBOR_ADJUST] + oldTemps[i][j - NEIGHBOR_ADJUST]) / NUM_NEIGHBORS;
+				currentTempChange = newTemps[i][j] - oldTemps[i][j];
+				if (currentTempChange > maxTempChange) {
+					maxTempChange = currentTempChange;
+				}
+			}
+		}
+		for (int i = 1; i < MAX_INDEX; ++i) {
+			for (int j = 1; j < MAX_INDEX; ++j) {
+				oldTemps[i][j] = newTemps[i][j];
+			}
+		}
+	} while (maxTempChange > STABLE_CHANGE);
+
+	cout << endl << endl;
+	cout << "Printing final plate..." << endl;
+
+	outputPlate.open(oFileName);
+	for (int i = 0; i < SIDE_LENGTH; ++i) {
+		for (int j = 0; j < SIDE_LENGTH; ++j) {
+			cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
+			outputPlate << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
+			if (j < MAX_INDEX) {
+				cout << ", ";
+				outputPlate << ",";
+			}
+		}
+		cout << endl;
+		outputPlate << endl;
+	}
+	outputPlate.close();
+	cout << endl;
+
+	inputPlate.open("Inputplate.txt");
+	if (!inputPlate.is_open()) {
+		cout << "fail" << endl;
+	}
+	else {
+		cout << "success" << endl;
+	}
+
+	/*if (inputPlate.is_open()) {
+		for (int i = 0; i < SIDE_LENGTH; ++i) {
+			for (int j = 0; j < SIDE_LENGTH; ++j) {
+				inputPlate >> oldTemps[i][j];
+			}
+		}
+	}
+	else {
+		cout << "loser" << endl; 
+	}
+
+	cout << "printing inputed plate" << endl << endl;
+
+	for (int i = 0; i < SIDE_LENGTH; ++i) {
+		for (int j = 0; j < SIDE_LENGTH; ++j) {
+			cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
+			if (j < MAX_INDEX) {
+				cout << ", ";
+			}
+		}
+		cout << endl;
+	}
+	*/
+
+	system("pause");
+	return 0;
+}
