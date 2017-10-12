@@ -1,26 +1,44 @@
 /*
+Nathaniel Neubert, Caleb Pomar, nathanielneubert@gmail.com, cpsharksfan@gmail.com 
+This is a program that simulates a hotplate with heaters of 100 degrees on the top and
+bottom. It outputs an excel file which can be used to create a graphical representaion.
+The program may also accept a pre-existing hotplate temperature table and determine the
+future temperature within a set number of iterations. The size of the Hotplate is set
+at 10 by 10.
 
-Size of the array must be changed by one constant (side length)
+This program was made using proper pair programming in Visual Studios.
 
-initialize 2d array using for loops (10 x 10)
-top and bottom middle 8 cells are 100
-use nested fors to intialize															DONE!!! thanks sudo
-use if else to initalize border 100
-print table with setprecision 4 and setw 10 (NO MAGIC NUMBERS!!!)
+We successfully created such a graphical representation in excel with the output file created
+by our program.
 
+Test Case 1 
+We hand calculated all the values for the hotplate after one and two iterations and
+stored the values in an excel spreadsheet. Below the results can be seen.
 
-update elements once
-use nested fors to just update inside (rows 1-8, columns 1-8)
-+i, -i, +j, -j, divided by 4 (NO MAGIC NUMBERS!!);
-print table
+After first iteration
+0.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	0.0000
+0.0000	25.0000	25.0000	25.0000	25.0000	25.0000	25.0000	25.0000	25.0000	0.0000
+0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000
+0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000
+0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000
+0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000
+0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000
+0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000
+0.0000	25.0000	25.0000	25.0000	25.0000	25.0000	25.0000	25.0000	25.0000	0.0000
+0.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	0.0000
 
-repeat until stable. Use while (biggest change > 0.1)
-
-output data to Hotplate.csv
-input data from zybook file
-run through the same flippin thing
-graph results in excel
-
+After Second iteration
+0.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	0.0000
+0.0000	31.2500	37.5000	37.5000	37.5000	37.5000	37.5000	37.5000	31.2500	0.0000
+0.0000	6.2500	6.2500	6.2500	6.2500	6.2500	6.2500	6.2500	6.2500	0.0000
+0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000
+0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000
+0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000
+0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000	0.0000
+0.0000	6.2500	6.2500	6.2500	6.2500	6.2500	6.2500	6.2500	6.2500	0.0000
+0.0000	31.2500	37.5000	37.5000	37.5000	37.5000	37.5000	37.5000	31.2500	0.0000
+0.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	100.0000	0.0000
+Result: Passed
 */
 
 #include <iostream>
@@ -34,6 +52,7 @@ int main() {
 	const int MIN_INDEX = 0;
 	const int MAX_INDEX = SIDE_LENGTH - 1;
 	const int NUM_NEIGHBORS = 4;
+	const int DESIRED_ITERATIONS = 3;
 
 	const double HOT_TEMP = 100.0000;
 	const double COLD_TEMP = 0.0000;
@@ -51,10 +70,10 @@ int main() {
 	ifstream inputPlate;
 	ofstream outputPlate;
 	string oFileName = "Hotplate.csv";
-	//string iFileName = "Inputplate.txt";
+	string iFileName = "Inputplate.txt";
 
 
-	cout << "Hotplate Simulator" << endl << endl;
+	cout << "Hotplate simulator" << endl << endl;
 	cout << "Printing initial plate..." << endl;
 
 	for (int i = 0; i < SIDE_LENGTH; ++i) {
@@ -72,13 +91,13 @@ int main() {
 		for (int j = 0; j < SIDE_LENGTH; ++j) {
 			cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
 			if (j < MAX_INDEX) {
-				cout << ", ";
+				cout << ",";
 			}
 		}
 		cout << endl;
 	}
 
-	cout << endl << endl;
+	cout << endl;
 	cout << "Printing Plate after one iteration..." << endl;
 
 	for (int i = 1; i < MAX_INDEX; ++i) {
@@ -97,7 +116,7 @@ int main() {
 		for (int j = 0; j < SIDE_LENGTH; ++j) {
 			cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
 			if (j < MAX_INDEX) {
-				cout << ", ";
+				cout << ",";
 			}
 		}
 		cout << endl;
@@ -122,7 +141,7 @@ int main() {
 		}
 	} while (maxTempChange > STABLE_CHANGE);
 
-	cout << endl << endl;
+	cout << endl;
 	cout << "Printing final plate..." << endl;
 
 	outputPlate.open(oFileName);
@@ -131,7 +150,7 @@ int main() {
 			cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
 			outputPlate << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
 			if (j < MAX_INDEX) {
-				cout << ", ";
+				cout << ",";
 				outputPlate << ",";
 			}
 		}
@@ -139,33 +158,48 @@ int main() {
 		outputPlate << endl;
 	}
 	outputPlate.close();
-	cout << endl;
 
-	inputPlate.open("Inputplate.txt");
+	cout << endl;
+	cout << "Outputting final plate to file " << "\"" << "Hotplate.csv" << "\"" << endl << endl;
+
+	inputPlate.open(iFileName);
 	if (!inputPlate.is_open()) {
 		cout << "fail" << endl;
 	}
 	if (inputPlate.is_open()) {
-	for (int i = 0; i < SIDE_LENGTH; ++i) {
-	for (int j = 0; j < SIDE_LENGTH; ++j) {
-	inputPlate >> oldTemps[i][j];
-	}
-	}
+		for (int i = 0; i < SIDE_LENGTH; ++i) {
+			for (int j = 0; j < SIDE_LENGTH; ++j) {
+				inputPlate >> oldTemps[i][j];
+			}
+		}
 	}
 	else {
-	cout << "loser" << endl;
+		cout << "fail" << endl;
 	}
 
-	cout << "printing inputed plate" << endl << endl;
+	for (int k = 0; k < DESIRED_ITERATIONS; ++k) {
+		for (int i = 1; i < MAX_INDEX; ++i) {
+			for (int j = 1; j < MAX_INDEX; ++j) {
+				newTemps[i][j] = (oldTemps[i - NEIGHBOR_ADJUST][j] + oldTemps[i + NEIGHBOR_ADJUST][j] +
+					oldTemps[i][j + NEIGHBOR_ADJUST] + oldTemps[i][j - NEIGHBOR_ADJUST]) / NUM_NEIGHBORS;
+			}
+		}
+		for (int i = 1; i < MAX_INDEX; ++i) {
+			for (int j = 1; j < MAX_INDEX; ++j) {
+				oldTemps[i][j] = newTemps[i][j];
+			}
+		}
+	}
 
+	cout << "Printing input plate after " << DESIRED_ITERATIONS << " updates..." << endl;
 	for (int i = 0; i < SIDE_LENGTH; ++i) {
-	for (int j = 0; j < SIDE_LENGTH; ++j) {
-	cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
-	if (j < MAX_INDEX) {
-	cout << ", ";
-	}
-	}
-	cout << endl;
+		for (int j = 0; j < SIDE_LENGTH; ++j) {
+			cout << fixed << setprecision(HEAT_PRECISION) << setw(HEAT_WIDTH) << oldTemps[i][j];
+			if (j < MAX_INDEX) {
+				cout << ",";
+			}
+		}
+		cout << endl;
 	}
 
 	system("pause");
